@@ -146,22 +146,23 @@ Este script Python utiliza o módulo pymongo para conectar e consultar um banco 
 
   def inicia_conexao():
   
-      client = MongoClient()
+      client = MongoClient("localhost", 27015)
       db = client['puc']
       col = db.recomendacoes
       return col
   
   def consulta_recomendacoes(usuario, conexao):
-  
       recomendacoes = list(conexao.find({"userId": usuario}))
       list_rec = []
       for rec in recomendacoes:
-          list_rec.append((rec['movieId'],rec['rating']))
+          list_rec.append({'id': rec['movieId'], 'rating': rec['rating']})
+      return list_rec
   
-      return {'Recomendações': list_rec}
-  
-    conn = inicia_conexao()
+  conn = inicia_conexao()
   ```
 
 ## *Testando a API*
-Para esse teste, utilizaremos o endpoint "/rec/v3/", para executando multipas requisições:
+Para esse teste, utilizaremos o endpoint "/rec/v3/", para executando multipas requisições: <br>
+Passamos os ID's de usuário [10, 20, 21, 34] e ele nos retornou as collections desses usuários:
+![image](https://github.com/ErickBrenno/Spark-Mongo/assets/83048005/01e18028-6b38-4f2f-9222-5b4ac25a8bfd)
+
